@@ -1,0 +1,9 @@
+Reads in a string from this file. The string has been encoded using a modified UTF-8 format. 
+
+ The first two bytes are read, starting from the current file pointer, as if by readUnsignedShort. This value gives the number of following bytes that are in the encoded string, not the length of the resulting string. The following bytes are then interpreted as bytes encoding characters in the modified UTF-8 format and are converted into characters. 
+
+ This method blocks until all the bytes are read, the end of the stream is detected, or an exception is thrown.
+Specified by:
+readUTF in interface DataInput
+Returns:
+a Unicode string.
