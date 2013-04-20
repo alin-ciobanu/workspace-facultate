@@ -157,7 +157,7 @@ public class Directions {
 		Board b = new Board(15, 15);
 		Scanner in = new Scanner(System.in);
 		
-		in.useDelimiter("\r\n");
+		in.useDelimiter("\n");
 		String[] map = new String[15];
 		for (int i = 0; i < 15; i++) {
 			map[i] = in.next();
