@@ -1,0 +1,20 @@
+Tema POO
+
+Timpul acordat: 25 de ore (aproximativ)
+Dificultate: 2/5, dificultate data mai mult de lungimea temei
+Sistem de operare folosit: Windows 7 Professional Edition 64-bit
+Versiune Java: 7 Update 10
+IDE: Eclipse Juno
+
+
+Detalii de implementare, explicatii si precizari
+
+Nu am folosit deloc clasa Library. Probabil mi-ar fi fost utila daca ar fi trebuit sa implementez mai multe biblioteci.
+Existenta unei biblioteci se verifica prin folderul ./books. Daca folderul acesta exista, inseamna ca exista o biblioteca.
+
+Coding style-ul este cam vraiste. M-am speriat ca n-o sa termin tema si am codat cu picioarele. Noroc cu deadline-ul extins.
+
+Mi-am dat seama dupa ce am terminat tema ca atunci cand vizulizez o carte, nu am buton de adaugat un nou capitol atunci cand nu exista niciun altul.
+Ca sa rezolv problema, la deschiderea unei noi carti, se verifica daca aceasta contine vreun capitol. Daca nu contine, se adauga unul automat.
+
+Cred ca interfata este destul de sugestiva, cu toate ca nu arata foarte bine.
