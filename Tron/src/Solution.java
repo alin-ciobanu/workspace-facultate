@@ -4,11 +4,7 @@ import java.util.*;
 public class Solution {
 
 	private static final int INF = Integer.MAX_VALUE;
-	private static final int DEPTH = 40; // a se folosi doar DEPTH par
-
-	private static long TIME = System.currentTimeMillis(); // folosit la taierea recursivitatii;
-	private static final long TIME_PER_MOVE = 5000; // 5 secunde pentru mutare (5000 ms)
-
+	private static final int DEPTH = 16; // a se folosi doar DEPTH par
 
 	/**
 	 * 
@@ -22,9 +18,10 @@ public class Solution {
 	 *         atat mai bine pentru ca minimaxul nostru stie sa caute solutii astfel
 	 *         incat sa il inchida
 	 * 
-	 * Trebuie jucat cu ce intoarce. In momentul de fata, daca functioneaza, va juca
-	 * destul de suicidal. El trebuie sa incerce sa ajunga in fata motocicletei inamice,
-	 * nu sa se izbeasca in ea. (Raspuns pentru Alin de la Alin: Nu-i chiar suicidal.)
+	 * Changed!
+	 * Pentru a determina scorul board-ului calculam numarul de puncte la care poate ajunge
+	 * primul un PLAYER si le comparam cu numarul de puncte la care poate ajunge 
+	 * primul PLAYER-ul celalalt
 	 * 
 	 */
 	private int evaluate(Board board, PLAYER play_as) {
@@ -48,7 +45,7 @@ public class Solution {
 					return -INF + 2;
 				default:
 					// aici nu se intra niciodata
-					return 1/(Directions.distanceBetween(pozR, pozG));
+					return 42;
 
 				}
 			} else {
@@ -63,14 +60,49 @@ public class Solution {
 					return -INF + 2;
 				default:
 					// aici nu se intra niciodata
-					return 1/(Directions.distanceBetween(pozR, pozG));
+					return 42;
 
 				}
 			}
 		}
 
-		return (-1) * Directions.distanceBetween(pozR, pozG);
+		int[][] distancesG = new int[board.lines][board.cols];
+		int[][] distancesR = new int[board.lines][board.cols];
+		distancesG = Directions.bfs(board, PLAYER.G);
+		distancesR = Directions.bfs(board, PLAYER.R);
+		
+		int[][] differences = new int[board.lines][board.cols];
+		int reachingG = 0, reachingR = 0;
+		
+		for (int i = 0; i < board.lines; i++) {
+			for (int j = 0; j < board.cols; j++) {
 
+				differences[i][j] = distancesG[i][j] - distancesR[i][j];
+				/*
+				 * Astfel, differences[i][j] > 0 daca R ajunge primul in punctul [i][j]
+				 * < 0 daca G ajunge primul in punctul [i][j]
+				 * == 0 daca amandoi ajung in acelasi timp
+				 */
+
+				if (differences[i][j] > 0) {
+					reachingR++;
+				}
+				if (differences[i][j] < 0) {
+					reachingG++;
+				}
+				
+			}
+		}
+		
+		// am impresia ca nu mai e nevoie si de if-urile astea, 
+		// dar la ora asta nu imi mai dau seama
+		if (play_as == PLAYER.R) {
+			return reachingR - reachingG;
+		}
+		else {
+			return reachingG - reachingR;
+		}
+		
 	}
 
 	/**
@@ -95,11 +127,8 @@ public class Solution {
 	 */
 	private int alphaBetaMax(int alpha, int beta, int depth, Board board,
 			PLAYER play_as, SingleDir nextMove) {
-		
-		long currentTime = System.currentTimeMillis();
-		long timeElapsed = currentTime - TIME;
 
-		if (depth == 0 || timeElapsed + 10 > TIME_PER_MOVE) {
+		if (depth == 0) {
 			return evaluate(board, play_as);
 		}
 
@@ -229,7 +258,7 @@ public class Solution {
 		Pair<Board, PLAYER> p = new Pair<Board, PLAYER>();
 		Board b;
 
-		in.useDelimiter("\n");
+		in.useDelimiter("\r\n");
         String player = in.nextLine();
         
         if (player.charAt(0) == 'r')
@@ -291,7 +320,7 @@ public class Solution {
 		bot.write(d);
 
 	}
-	
+
 }
 
 class SingleDir {
