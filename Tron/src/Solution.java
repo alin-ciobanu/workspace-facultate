@@ -4,7 +4,10 @@ import java.util.*;
 public class Solution {
 
 	private static final int INF = Integer.MAX_VALUE;
-	private static final int DEPTH = 20; // a se folosi doar DEPTH par
+	private static final int DEPTH = 40; // a se folosi doar DEPTH par
+
+	private static long TIME = System.currentTimeMillis(); // folosit la taierea recursivitatii;
+	private static final long TIME_PER_MOVE = 5000; // 5 secunde pentru mutare (5000 ms)
 
 
 	/**
@@ -93,7 +96,10 @@ public class Solution {
 	private int alphaBetaMax(int alpha, int beta, int depth, Board board,
 			PLAYER play_as, SingleDir nextMove) {
 		
-		if (depth == 0) {
+		long currentTime = System.currentTimeMillis();
+		long timeElapsed = currentTime - TIME;
+
+		if (depth == 0 || timeElapsed + 10 > TIME_PER_MOVE) {
 			return evaluate(board, play_as);
 		}
 
@@ -142,7 +148,7 @@ public class Solution {
 	 */
 	private int alphaBetaMini(int alpha, int beta, int depth, Board board,
 			DIRECTION move, PLAYER play_as, SingleDir nextMove) {
-		
+
 		if (depth == 0) {
 			return -evaluate(board, play_as);
 		}
@@ -153,7 +159,7 @@ public class Solution {
 		 * tabla de joc doar in mini cu ambele miscari.
 		 * 
 		 */
-		
+
 		for (DIRECTION dir : possibleMoves) {
 
 			int score;
@@ -274,7 +280,7 @@ public class Solution {
 	}
 	
 	public static void main (String[] args) {
-		
+
 		Solution bot = new Solution();
 		Scanner in = new Scanner(System.in);
 		Pair<Board, PLAYER> p = bot.read(in);
