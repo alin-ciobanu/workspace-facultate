@@ -310,9 +310,9 @@ public class Solution {
 	 * Scrie la stdout directia dir.
 	 */
 	public void write (DIRECTION dir) {
-		
+
 		System.out.println(dir);
-		
+
 	}
 	
 	public static void main (String[] args) {
