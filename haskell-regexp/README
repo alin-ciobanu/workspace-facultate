@@ -1,0 +1,18 @@
+Tema 2 PP (Haskell) - Expresii regulate
+
+Student: Ciobanu Alin Emanuel
+Grupa: 322 CC
+Dificultate tema: 5/5 (hardcore)
+Timp alocat: mare (m-am apucat de ea din timp, am citit pe internet despre expresii regulate, 
+			am dat de automate, am aflat ca nu era bine, apoi m-am chinuit sa fac cum se cerea pe forum)
+Sistem de operare: Windows 7
+
+
+Detalii de implementare
+
+Implementarea seamana cu exemplele date pe forum.
+Functia expr primeste un string si transforma string-ul in tipul de date definit pentru expresia regulata.
+Un atom este o expresie sau o expresie urmata de '+', '?', '*' sau o litera (urmata sau nu de unul dintre cei 3 operatori).
+La sfarsit mi-am dat seama ca nu tin cont de expresiile de genul a|b|c (mai multe alt-uri) si de expresiile de genul a|bc 
+(programul meu vede (a|b)c in loc de a|(bc)).
+Tipul de date Regex tine cont de toti operatorii si permite reprezentarea unei expresii regulate.
