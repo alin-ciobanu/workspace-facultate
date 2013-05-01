@@ -77,20 +77,11 @@ public class Solution {
 		
 		int[][] differences = new int[board.lines][board.cols];
 		int reachingG = 0, reachingR = 0;
-		int distG = 0, distR = 0;
 		
 		for (int i = 0; i < board.lines; i++) {
 			for (int j = 0; j < board.cols; j++) {
 
 				differences[i][j] = distancesG[i][j] - distancesR[i][j];
-				
-				if (distancesG[i][j] != INF) {
-					distG += distancesG[i][j];
-				}
-				
-				if (distancesR[i][j] != INF) {
-					distR += distancesR[i][j];
-				}
 				
 				/*
 				 * Astfel, differences[i][j] > 0 daca R ajunge primul in punctul [i][j]
@@ -109,10 +100,10 @@ public class Solution {
 		}
 
 		if (play_as == PLAYER.R) {
-			return (reachingR - reachingG)*10000 - distR;
+			return (reachingR - reachingG);
 		}
 		else {
-			return (reachingG - reachingR)*10000 - distG;
+			return (reachingG - reachingR);
 		}
 		
 	}
