@@ -69,7 +69,7 @@ public class Lab10 {
     /* Niciodata nu ar trebui sa se intample asta pentru ca sursa si destinatia
      * sunt noduri distincte si cel putin unul dintre ele se afla in path. */
     if (path.size() < 2) {
-      return 0;
+       return 0;
     }
 
     /* Determinam fluxul maxim prin drum. */
@@ -77,13 +77,14 @@ public class Lab10 {
     for (int i = 0; i < path.size() - 1; ++i) {
       int u = path.get(i), v = path.get(i + 1);
       /* TODO - Determinati fluxul in functie de capacitata muchiei (u, v) */
-
+      if (g.capacityMatrix[u][v] < flow)
+    	  flow = g.capacityMatrix[u][v];
     }
 
     /* Si il saturam in graf. */
     for (int i = 0; i < path.size() - 1; ++i) {
       int u = path.get(i), v = path.get(i + 1);
-
+      
       /* TODO - Modificati fluxul in functie de capacitatea muchiei (u, v) */
     }
 
