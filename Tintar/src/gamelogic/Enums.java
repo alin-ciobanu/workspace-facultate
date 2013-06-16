@@ -3,7 +3,8 @@ package gamelogic;
 enum MARK {
 	BLACK,
 	WHITE,
-	EMPTY
+	EMPTY,
+	OBSTACLE
 };
 
 enum PLAYER {
