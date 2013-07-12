@@ -1,14 +1,30 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 
 
 public class TestGround {
 	
-	public static void main (String[] args) throws InterruptedException {
+	public void changePair (Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> p) {
+		
+		p.setBoth(new Pair<Integer, Integer>(1, 3), new Pair<Integer, Integer>(5, 7));
+		
+	}
 
-		long time = System.currentTimeMillis();
+	
+	public static void main (String[] args) {
+		
+		TestGround t = new TestGround();
+		
+		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> p = new Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>();
+		p.setBoth(new Pair<Integer,Integer>(0, 0), new Pair<Integer, Integer>(0, 0));
 
-		Thread.sleep(1000);
-		System.out.println(time - System.currentTimeMillis());
-
+		System.out.println(p);
+		t.changePair(p);
+		
+		System.out.println(p);
+		
 	}
 	
 }
