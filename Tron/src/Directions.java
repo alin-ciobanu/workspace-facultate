@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -11,11 +10,6 @@ public class Directions {
 	 * A NU SE CONFUNDA CU ENUMERAREA DIRECTION!
 	 * Clasa pentru scrierea metodelor statice
 	 */
-	
-	static int TIME_FOR_DFS;
-	static int[][] IDX;
-	static Pair<Integer, Integer>[][] parent;
-	static ArrayList<Pair<Integer, Integer>> articulationPoints;
 	
 	private static int INF = Integer.MAX_VALUE;
 	
@@ -151,100 +145,14 @@ public class Directions {
 		return distance;
 
 	}
-	
-	/**
-	 *
-	 * @return punctele de articulatie
-	 */
-	public static void getArticulationPoints (Board b, PLAYER play_as) {
-
-		articulationPoints = new ArrayList<Pair<Integer,Integer>>();
-		
-		IDX = new int[b.lines][b.cols];
-		parent = new Pair[b.lines][b.cols];
-		for (int i = 0; i < b.lines; i++) {
-			for (int j = 0; j < b.cols; j++) {
-				IDX[i][j] = -1; // IDX e nedefinit pt nodul [i,j]
-				parent[i][j] = new Pair<Integer, Integer>(-1, -1);
-			}
-		}
-		
-
-		TIME_FOR_DFS = 0;
-		for (int i = 0; i < b.lines; i++) {
-			for (int j = 0; j < b.lines; j++) {
-				if (IDX[i][j] == -1 && b.board[i][j] == MARK.SPACE) {
-					isArticulationPoint(b, new Pair<Integer, Integer>(i, j));
-				}
-			}
-		}
-		
-
-	}
-	
-	private static void isArticulationPoint (Board b, Pair<Integer, Integer> v) {
-		
-		int i = v.getFirst();
-		int j = v.getSecond();
-		
-		int[][] low;
-		low = new int[b.lines][b.cols];
-		
-		IDX[i][j] = TIME_FOR_DFS;
-		low[i][j] = TIME_FOR_DFS;
-		
-		TIME_FOR_DFS++;	
-		HashSet<Pair<Integer, Integer>> copii = new HashSet<Pair<Integer,Integer>>();
-		
-		ArrayList<Pair<Integer, Integer>> neighbours = new ArrayList<Pair<Integer,Integer>>();
-		// vecinii nodului v
-		
-		if (b.board[i + 1][j] == MARK.SPACE) {
-			neighbours.add(new Pair<Integer, Integer>(i + 1, j));
-		}
-		if (b.board[i - 1][j] == MARK.SPACE) {
-			neighbours.add(new Pair<Integer, Integer>(i - 1, j));
-		}
-		if (b.board[i][j + 1] == MARK.SPACE) {
-			neighbours.add(new Pair<Integer, Integer>(i, j + 1));
-		}
-		if (b.board[i][j - 1] == MARK.SPACE) {
-			neighbours.add(new Pair<Integer, Integer>(i, j - 1));
-		}
-		
-		for (Pair<Integer, Integer> u : neighbours) {
-			int ui, uj;
-			ui = u.getFirst();
-			uj = u.getSecond();
-			
-			if (IDX[ui][uj] == -1) {
-				parent[ui][uj] = new Pair<Integer, Integer>(i, j);
-				copii.add(u);
-				isArticulationPoint(b, u);
-				low[i][j] = Math.min(low[i][j], low[ui][uj]);
-			}
-			else {
-				low[i][j] = Math.min(low[i][j], IDX[ui][uj]);
-			}
-		}
-		
-		if (parent[i][j].getFirst() == -1 && copii.size() >= 2) {
-			articulationPoints.add(new Pair<Integer, Integer>(i, j));
-		}
-		else {
-			if (!(parent[i][j].getFirst() == -1)) {
-				for (Pair<Integer, Integer> p : copii) {
-					if (low[p.getFirst()][p.getSecond()] >= IDX[i][j]) {
-						articulationPoints.add(new Pair<Integer, Integer>(i, j));
-					}
-				}
-			}
-		}
-		
-	}
 
 	
 	public static void main (String[] args) {
+		
+		/**
+		 * 
+		 * Testare BFS
+		 */
 		
 		Board b = new Board(15, 15);
 		Scanner in = new Scanner(System.in);
@@ -260,11 +168,18 @@ public class Directions {
 
 		int[][] dist = new int[15][15];
 		
-		ArrayList<Pair<Integer, Integer>> pct = new ArrayList<Pair<Integer,Integer>>();
+		dist = bfs(b, PLAYER.R);
 		
-		getArticulationPoints(b, PLAYER.R);
-		pct = Directions.articulationPoints;
-		System.out.println(pct);
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				System.out.print(dist[i][j] + " ");
+			}
+			System.out.println();
+		}
+		
+		/**
+		 * Se pare ca merge. :)
+		 */
 		
 	}
 	

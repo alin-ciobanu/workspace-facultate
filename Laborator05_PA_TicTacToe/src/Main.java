@@ -22,7 +22,8 @@ public class Main {
         System.out.println(NR_APELURI);
 
         // calculeaza cea mai buna mutare din pozitia data de tabla b
-        // Mutarea este data de perechea (rand, coloana) unde va fi plasat X sau 0
+        // Mutarea este data de perechea (rand, coloana) unde va fi plasat X sau
+        // O
 
         // Intoarce noua mutare
         return move;
@@ -64,11 +65,11 @@ public class Main {
     	return max;
 
     }
-
+    
     static int mini (Board b, PLAYER play_as, int depth, Pair p) {
 
     	NR_APELURI++;
-
+    	
     	ArrayList<Pair> freeSquares = b.GetEmptySquares();
 
     	if (depth <= 0 || freeSquares.size() == 0 || 
