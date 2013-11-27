@@ -1,0 +1,254 @@
+﻿<div class="page group" style="min-height: 709px;">
+                                                            <!-- wikipage start -->
+                    <!-- TOC START -->
+<div id="dw__toc">
+<h3 class="toggle open" style="cursor: pointer;"><strong><span>−</span></strong>Cuprins</h3>
+<div style="">
+
+<ul class="toc">
+<li class="level1"><div class="li"><a href="#haskellexpresii-regulate">Haskell: Expresii regulate</a></div>
+<ul class="toc">
+<li class="level2"><div class="li"><a href="#descriere">Descriere</a></div></li>
+<li class="level2"><div class="li"><a href="#expresii-regulate">Expresii regulate</a></div></li>
+<li class="level2"><div class="li"><a href="#bonus-20">Bonus (20%)</a></div></li>
+<li class="level2"><div class="li"><a href="#implementare">Implementare</a></div></li>
+<li class="level2"><div class="li"><a href="#precizari">Precizări</a></div></li>
+<li class="level2"><div class="li"><a href="#testare">Testare</a></div></li>
+<li class="level2"><div class="li"><a href="#referinte">Referințe</a></div></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<!-- TOC END -->
+
+<h1 class="sectionedit1" id="haskellexpresii-regulate">Haskell: Expresii regulate</h1>
+<div class="level1">
+<ul>
+<li class="level1"><div class="li"> Responsabil: <a href="mailto:mmihnea@gmail.com" class="mail" title="mmihnea@gmail.com">Mihnea Muraru</a></div>
+</li>
+<li class="level0"><div class="li"> Deadline: 29.04.2013</div>
+</li>
+<li class="level0"><div class="li"> Data publicării: 08.04.2013</div>
+</li>
+<li class="level0"><div class="li"> Data ultimei modificări: 09.04.2013</div>
+</li>
+<li class="level0"><div class="li"> Data tester-ului: 08.04.2013</div>
+</li>
+</ul>
+
+</div>
+
+<h2 class="sectionedit2" id="descriere">Descriere</h2>
+<div class="level2">
+
+<p>
+Scopul temei este implementarea unui mecanism de <strong>identificare</strong> de șiruri, pe baza <strong><a href="http://en.wikipedia.org/wiki/Regular_expression" class="urlextern" title="http://en.wikipedia.org/wiki/Regular_expression" rel="nofollow">expresiilor regulate</a></strong>, cu sintaxă restrânsă.
+</p>
+
+<p>
+Mai precis, se dorește implementarea unei funcții, <strong><code>matches</code></strong> („potriviri“), care, primind o <strong>expresie regulată</strong>, și un <strong>șir</strong>, determină, <strong>în ordine</strong>, <strong>cele mai lungi subșiruri</strong> disjuncte (vezi secțiunea “<a href="#precizari" title="teme13:haskell-regexp ↵" class="wikilink1">Precizări</a>“), care se potrivesc cu expresia furnizată. De exemplu, știind că expresia regulată <code>"a+|b+"</code> denotă șiruri conținând cel puțin un caracter <code>'a'</code> și șiruri conținând cel puțin un caracter <code>'b'</code>, iată ce va întoarce aplicația de mai jos:
+</p>
+<pre class="code haskell"><span class="sy0">&gt;</span> matches <span class="st0">"a+|b+"</span> <span class="st0">"abbcccaaa"</span>
+<span class="br0">[</span><span class="st0">"a"</span><span class="sy0">,</span> <span class="st0">"bb"</span><span class="sy0">,</span> <span class="st0">"aaa"</span><span class="br0">]</span></pre>
+
+<p>
+Situația de mai sus <strong>diferă</strong> de cea a utilizării expresiei <code>"(a|b)+"</code>, care denotă șiruri formate din cel puțin un caracter <code>'a'</code> sau un caracter <code>'b'</code>. Pentru șirul de mai sus, rezultatul devine:
+</p>
+<pre class="code haskell"><span class="sy0">&gt;</span> matches <span class="st0">"(a|b)+"</span> <span class="st0">"abbcccaaa"</span>
+<span class="br0">[</span><span class="st0">"abb"</span><span class="sy0">,</span> <span class="st0">"aaa"</span><span class="br0">]</span></pre>
+
+</div>
+
+<h2 class="sectionedit3" id="expresii-regulate">Expresii regulate</h2>
+<div class="level2">
+
+<p>
+<strong>Elementele</strong> ce pot apărea în expresiile regulate, utilizate în temă, sunt:
+</p>
+<ul>
+<li class="level1"><div class="li"> <strong>Litere</strong> mici: <code>a</code>, <code>b</code> etc.</div>
+</li>
+<li class="level0"><div class="li"> <strong>Secvențe</strong>: <code>ab</code>, <code>aabbb</code> etc.</div>
+</li>
+<li class="level0"><div class="li"> <strong>Paranteze</strong> rotunde, pentru grupare.</div>
+</li>
+<li class="level0"><div class="li"> Operatorul <strong>„opțional“</strong>, <code>?</code>, desemnând un element ce poate lipsi din șir. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"ab?c"</code> se potrivește atât cu <code>"abc"</code>, cât și cu <code>"ac"</code>.</div>
+</li>
+<li class="level1"><div class="li"> <code>"(ab)?c"</code> se potrivește atât cu <code>"abc"</code>, cât și cu <code>"c"</code>.</div>
+</li>
+</ul>
+</li>
+<li class="level0"><div class="li"> Operatorul <strong>„zero sau mai multe“</strong> apariții ale unui element, <code>*</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"ab*c"</code> se potrivește cu <code>"ac"</code>, <code>"abc"</code>, <code>"abbc"</code> etc.</div>
+</li>
+<li class="level1"><div class="li"> <code>"(ab)*c"</code> se potrivește cu <code>"c"</code>, <code>"abc"</code>, <code>"ababc"</code> etc.</div>
+</li>
+</ul>
+</li>
+<li class="level0"><div class="li"> Operatorul <strong>„una sau mai multe“</strong> apariții ale unui element, <code>+</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"ab+c"</code> se potrivește cu <code>"abc"</code>, <code>"abbc"</code> etc., dar nu cu <code>"ac"</code>.</div>
+</li>
+<li class="level1"><div class="li"> <code>"(ab)+c"</code> se potrivește cu <code>"abc"</code>, <code>"ababc"</code> etc., dar nu cu <code>"c"</code>.</div>
+</li>
+</ul>
+</li>
+<li class="level0"><div class="li"> Operatorul de <strong>alternare</strong>, <code>|</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"ab|c"</code> se potrivește cu <code>"ab"</code> și cu <code>"c"</code>.</div>
+</li>
+<li class="level1"><div class="li"> <code>"(ab)|c"</code>, la fel ca mai sus.</div>
+</li>
+<li class="level1"><div class="li"> <code>"a(b|c)"</code> se potrivește cu <code>"ab"</code> și cu <code>"ac"</code>.</div>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+În absența parantezelor, <strong>prioritizarea</strong> operatorilor, de la cel mai puternic, către cel mai slab, se face astfel:
+</p>
+<ul>
+<li class="level1"><div class="li"> cuantificare: <code>?</code>, <code>*</code>, <code>+</code></div>
+</li>
+<li class="level0"><div class="li"> secvențiere</div>
+</li>
+<li class="level0"><div class="li"> alternare: <code>|</code>.</div>
+</li>
+</ul>
+
+<p>
+De exemplu, în cadrul expresiei <code>"ab*|c"</code>, gruparea se face, <strong>implicit</strong>, ca în <code>"(a(b*))|(c)"</code>. O modalitate de parantezare, care <strong>alterează</strong> semantica expresiei inițiale, este <code>"a(b*|c)"</code>.
+</p>
+
+</div>
+
+<h2 class="sectionedit4" id="bonus-20">Bonus (20%)</h2>
+<div class="level2">
+
+<p>
+Pentru bonus, se va extinde mecanismul de <strong>cuantificare</strong>, pentru a permite precizarea <strong>valorilor inferioare și superioare</strong>, ale numărului de aprariții ale unui element. Cazurile posibile sunt surprinse mai jos:
+</p>
+<ul>
+<li class="level1"><div class="li"> <strong>Exact</strong> <code>n</code> apariții, <code>"{n}"</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"a{2}"</code> se potrivește cu <code>"aa"</code>, dar nu cu <code>"a"</code> sau cu <code>"aaa"</code>.</div>
+</li>
+</ul>
+</li>
+<li class="level0"><div class="li"> <strong>Cel puțin</strong> <code>n</code> apariții, <code>"{n,}"</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"a{2,}"</code> se potrivește cu <code>"aa"</code> și cu <code>"aaa"</code>, dar nu cu <code>"a"</code>.</div>
+</li>
+</ul>
+</li>
+<li class="level0"><div class="li"> <strong>Între</strong> <code>n</code> și <code>m</code> apariții, <code>"{n,m}"</code>. Exemple:</div>
+<ul>
+<li class="level1"><div class="li"> <code>"a{2,3}"</code> se potrivește cu <code>"aa"</code> și cu <code>"aaa"</code>, dar nu cu <code>"a"</code> sau cu <code>"aaaa"</code>.</div>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+<h2 class="sectionedit5" id="implementare">Implementare</h2>
+<div class="level2">
+
+<p>
+Punctul de pornire este constituit de <strong>modulul</strong> de parsare, <code>Parser.hs</code>, din resursele aferente cursului 7, „Evaluare Leneșă în Haskell“ (vezi secțiunea “<a href="#testare" title="teme13:haskell-regexp ↵" class="wikilink1">Testare</a>“). Pentru documentație, accesați <code>doc/index.html</code>.
+</p>
+
+<p>
+Aplicarea funcției <code>matches</code> presupune parcurgerea a <strong>două etape</strong>:
+</p>
+<ol>
+<li class="level1"><div class="li"> Parsarea <strong>expresiei regulate</strong></div>
+</li>
+<li class="level0"><div class="li"> Parsarea <strong>șirului</strong> în care se caută potriviri, utilizând informația extrasă din expresia regulată.</div>
+</li>
+</ol>
+
+<p>
+Ambele etape presupun construirea unor <strong>funcții de parsare</strong>, pornind de la modulul menționat mai sus. Astfel:
+</p>
+<ol>
+<li class="level1"><div class="li"> Pentru parsarea <strong>expresiei regulate</strong>, funcțiile de parsare vor fi definite <strong>explicit</strong>, de voi, din moment ce componența posibilă a expresiilor regulate este cunoscută a priori.</div>
+</li>
+<li class="level0"><div class="li"> Pentru parsarea <strong>șirului</strong>, funcțiile de parsare vor fi construite <strong>la cerere</strong>, în funcție de expresia regulată dată.</div>
+</li>
+</ol>
+
+<p>
+Din cauza formei <strong>liniare</strong>, <strong>nestructurate</strong>, a expresiilor regulate, construirea funcției de parsare aferente etapei (2) este <strong>dificil</strong> de realizat în paralel cu parsarea din etapa (1). Astfel, în practică, parsarea din etapa (1) produce o reprezentare <strong>intermediară</strong>, <strong>structurată</strong>, a expresiei regulate. Pe baza acesteia, se poate construi, mult mai facil, funcția de parsare a șirului analizat. De exemplu, prin parsarea expresiei regulate <code>"a|b"</code>, se poate obține forma intermediară <code>Alternation (Letter 'a')  (Letter 'b')</code>, <br>reprezentând valoarea unui <strong>tip de date</strong> definit de voi, pentru care <code>Alternation</code> și <code>Letter</code> sunt constructori de date.
+</p>
+
+<p>
+Schematic, <strong>procesul</strong> poate fi reprezentat astfel:
+</p>
+<pre class="code">parsarea expresiei regulate -&gt; reprezentarea intermediară a acesteia -&gt; funcția de parsare a șirului analizat</pre>
+
+</div>
+
+<h2 class="sectionedit6" id="precizari">Precizări</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Tema va expune modulul <strong><code>Regexp</code></strong>. Pentru aceasta, adăugați următoarea linie la începutul fișierului vostru: <pre class="code haskell"><span class="kw1">module</span> Regexp <span class="kw1">where</span></pre>
+</div>
+</li>
+<li class="level0"><div class="li"> Modulul va expune funcția <strong><code>matches</code></strong>, având tipul de mai jos, respectând convențiile de la începutul enunțului: <pre class="code haskell">matches <span class="sy0">::</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span class="kw4">String</span></a>    <span class="co1">-- Expresia regulată</span>
+        <span class="sy0">-&gt;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span class="kw4">String</span></a>    <span class="co1">-- Șirul analizat</span>
+        <span class="sy0">-&gt;</span> <span class="br0">[</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span class="kw4">String</span></a><span class="br0">]</span>  <span class="co1">-- Lista potrivirilor</span></pre>
+</div>
+</li>
+<li class="level0"><div class="li"> Șirurile analizate vor conține <strong>exclusiv litere mici</strong>.</div>
+</li>
+<li class="level0"><div class="li"> Operatorii <code>?</code> și <code>*</code> pot produce <strong>potriviri vide</strong>, în situația în care însoțesc întreaga expresie regulată. În exemplul de mai jos, se produce câte o potrivire vidă în dreptul fiecărui caracter, cu excepția primului, inclusiv la sfârșitul șirului: <pre class="code haskell"><span class="sy0">&gt;</span> matches <span class="st0">"a?"</span> <span class="st0">"abb"</span>
+<span class="br0">[</span><span class="st0">"a"</span><span class="sy0">,</span> <span class="st0">""</span><span class="sy0">,</span> <span class="st0">""</span><span class="sy0">,</span> <span class="st0">""</span><span class="br0">]</span></pre>
+</div>
+</li>
+<li class="level0"><div class="li"> Se vor identifica <strong>cele mai lungi subșiruri</strong> care se potrivesc cu expresia regulată. În exemplul de mai jos, cu toate că și subșirul <code>"a"</code> se potrivește cu expresia <code>"ab?"</code>, rezultatul face referire la subșirul <code>"ab"</code>, deoarece este cel mai lung: <pre class="code haskell"><span class="sy0">&gt;</span> matches <span class="st0">"ab?"</span> <span class="st0">"ab"</span>
+<span class="br0">[</span><span class="st0">"ab"</span><span class="br0">]</span></pre>
+</div>
+</li>
+<li class="level0"><div class="li"> După identificarea unui subșir potrivit cu expresia regulată, căutarea <strong>următorului</strong> va începe imediat de <strong>după</strong> cel anterior. În exemplul de mai jos, după identificarea subșirului format din primele două caractere <code>'a'</code>, căutarea se continuă de la cel de-al treilea, secvența nemaifiind găsită: <pre class="code haskell"><span class="sy0">&gt;</span> matches <span class="st0">"aa"</span> <span class="st0">"aaa"</span>
+<span class="br0">[</span><span class="st0">"aa"</span><span class="br0">]</span>  <span class="co1">-- nu ["aa", "aa"]</span></pre>
+</div>
+</li>
+</ul>
+
+</div>
+
+<h2 class="sectionedit7" id="testare">Testare</h2>
+<div class="level2">
+
+<p>
+Arhiva de mai jos conține <strong>scheletul</strong> de pornire, al temei, și <strong>tester-ul</strong>. Instrucțiunile de utilizare se găsesc în fișierul <code>readme.txt</code>:
+</p>
+
+<p>
+<a href="/pp/_media/teme13/haskell-regexp.zip" class="media mediafile mf_zip" title="teme13:haskell-regexp.zip">Arhiva de pornire</a>
+</p>
+
+<p>
+În momentul <strong>trimiterii</strong> temei, este suficient să includeți, ca sursă, doar fișierul <strong><code>Regexp.hs</code></strong>.<br>
+</p>
+
+</div>
+
+<h2 class="sectionedit8" id="referinte">Referințe</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://en.wikipedia.org/wiki/Regular_expression" class="urlextern" title="http://en.wikipedia.org/wiki/Regular_expression" rel="nofollow">Expresii regulate - Wikipedia</a></div>
+</li>
+<li class="level0"><div class="li"> <a href="http://www.regular-expressions.info/" class="urlextern" title="http://www.regular-expressions.info/" rel="nofollow">Regular-Expressions.info</a></div>
+</li>
+</ul>
+
+</div>
+
+                    <!-- wikipage stop -->
+                                    </div>

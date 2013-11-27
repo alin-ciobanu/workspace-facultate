@@ -1,19 +1,15 @@
-import java.awt.Graphics;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+public class MainClass {
 
-public class MainClass extends JPanel {
+	public static void main(String[] a) {
 
-  public static void main(String[] a) {
-    JFrame f = new JFrame();
-    f.setSize(400, 400);
-    f.add(new MainClass());
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setVisible(true);
-  }
+		char delims[] = new char[10];
+		delims[0] = '\r';
+		delims[1] = '\n';
+		delims[2] = '\t';
+		delims[3] = '\f';
+		System.out.println(delims.length);
 
-  public void paint(Graphics g) {
-    g.drawRect (5, 15, 50, 75); 
-  }
+	}
+
 }
